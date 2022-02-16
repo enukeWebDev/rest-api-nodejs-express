@@ -1,89 +1,14 @@
-// import route from 'color-convert/route';
 import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
+import { getUsers, createUsers, getID, deleteById, editById } from '../controllers/users.js';
 
 //Initialize Router
 const router = express.Router();
 
-let users = [
-  // {
-  //   firstName: "Erick",
-  //   lastName: "Nuke",
-  //   age: 41
-  // },
+router.get('/', getUsers);
+router.post('/', createUsers);
+router.get('/:id', getID);
+router.delete('/:id', deleteById);
+router.patch('/:id', editById);
 
-  // {
-  //   firstName: "Apple",
-  //   lastName: "Nuke",
-  //   age: 41
-  // }
-]
-
-
-router.get('/', (req, res) => {
-
-
-  res.send(users);
-})
-
-
-
-//Adding the users to the database
-router.post('/', (req, res) => {
-
-
-  const user = req.body;
-
-  const userID = uuidv4();
-
-  const userWithId = { ...user, id: userID };
-  // console.log(req.body);
-  users.push(userWithId);
-
-  //   //This will send message to the users
-  res.send(`New user with the name ${user.firstName} ${user.lastName} is added.`);
-
-});
-
-//: means can expext anything
-router.get('/:id', (req, res) => {
-
-  const { id } = req.params;
-
-  const foundUser = users.find((user) => user.id === id)
-  res.send(foundUser);
-})
-
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-
-  users = users.filter((user) => user.id !== id);
-
-  res.send(`User with ID ${id} has been deleted.`);
-
-});
-
-router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-
-  const { firstName, lastName, age } = req.body;
-
-  const user = users.find((user) => user.id === id)
-
-
-  if (firstName) {
-    user.firstName = firstName;
-  }
-
-  if (lastName) {
-    user.lastName = lastName;
-  }
-
-  if (age) {
-    user.age = age;
-  }
-
-  res.send(`User with ID ${id} has been update.`)
-});
 
 export default router;
